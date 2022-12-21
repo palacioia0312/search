@@ -26,27 +26,13 @@ import { DashboardsRoutingModule } from "./dashboards-routing.module";
 import { SharedModule } from '../../shared/shared.module';
 import { WidgetModule } from '../../shared/widget/widget.module';
 
-
-// Component
-import { AnalyticsComponent } from './analytics/analytics.component';
-import { CrmComponent } from './crm/crm.component';
-import { CryptoComponent } from './crypto/crypto.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { NftComponent } from './nft/nft.component';
-
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
   slidesPerView: 'auto'
 };
 
 @NgModule({
-  declarations: [
-    AnalyticsComponent,
-    CrmComponent,
-    CryptoComponent,
-    ProjectsComponent,
-    NftComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     NgbToastModule,
