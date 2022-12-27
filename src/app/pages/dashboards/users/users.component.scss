@@ -1,0 +1,44 @@
+.content-user {
+	height: 13vh;
+	margin-bottom: 10px;
+}
+
+.content {
+	display: flex;
+	justify-content: flex-start;
+	border: 1px solid black;
+	border-left: 10px solid red;
+	border-radius: 5px;
+	height: 100%;
+}
+
+.content .content-img {
+	margin: 10px;
+}
+.content .content-img img {
+	border-radius: 50%;
+	height: 100%;
+	width: 100%;
+}
+
+.content .content-info {
+	display: flex;
+	justify-content: space-between;
+}
+
+.content .content-info{
+	padding: 8px;
+}
+
+.content .content-date-info {
+	border-left: 1px solid black;
+	padding-left: 25px;
+}
+
+.content .content-date-info .title{
+	display: block;
+}
+
+.btn-save{
+	margin-left: 10px;
+}

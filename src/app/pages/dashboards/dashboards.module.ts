@@ -25,6 +25,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { DashboardsRoutingModule } from "./dashboards-routing.module";
 import { SharedModule } from '../../shared/shared.module';
 import { WidgetModule } from '../../shared/widget/widget.module';
+import { UsersComponent } from './users/users.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -32,7 +33,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 };
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    UsersComponent
+  ],
   imports: [
     CommonModule,
     NgbToastModule,
