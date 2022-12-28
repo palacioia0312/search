@@ -417,20 +417,60 @@
 								Información
 							</a>
 							<ng-template ngbNavContent>
-								<p class="flex-grow-1 mb-0">
-									<img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-lg rounded float-start me-3">
-									Food truck fixie locavore, accusamus mcsweeney's marfa nulla
-									single-origin coffee squid. Exercitation +1 labore velit, blog
-									sartorial PBR leggings next level wes anderson artisan four loko
-									farm-to-table craft beer twee. commodo enim craft beer mlkshk aliquip jean shorts
-									ullamco ad
-									vinyl cillum PBR. Homo nostrud organic, assumenda labore
-									aesthetic magna delectus.commodo enim craft beer mlkshk aliquip jean shorts ullamco
-									ad
-									vinyl cillum PBR. Homo nostrud organic, assumenda labore
-									aesthetic magna delectus. If you’re using multiple elements, make sure that your
-									principal object is larger than assumenda.
-								</p>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Nombre</label>
+										<input type="password" class="form-control" placeholder="Jhon">
+									</div>
+									<div class="col">
+										<label for="basiInput" class="form-label">Apellido</label>
+										<input type="password" class="form-control" placeholder="Doe">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Tipo de documento</label>
+										<input type="password" class="form-control" placeholder="Cedula">
+									</div>
+									<div class="col">
+										<label for="basiInput" class="form-label">Número de documento</label>
+										<input type="password" class="form-control" placeholder="72335987">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Telefono</label>
+										<input type="password" class="form-control" placeholder="3218769898">
+
+									</div>
+									<div class="col">
+										<label for="basiInput" class="form-label">Dirección</label>
+										<input type="password" class="form-control" placeholder="Carrera 56 # 37 - 43">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Email</label>
+										<input type="password" class="form-control" placeholder="jhon.doe@gmail.com">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Nickname</label>
+										<input type="password" class="form-control" placeholder="jhond23">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Rol</label>
+										<input type="password" class="form-control" placeholder="Agente comercial">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col text-end">
+										<button class="btn btn-success">Editar</button>
+									</div>
+								</div>
 							</ng-template>
 						</li>
 						<li [ngbNavItem]="2">
@@ -447,10 +487,19 @@
 									</div>
 									<div class="col-6">
 										<div class="input-group">
-											<input type="password" class="form-control" placeholder="Confirmar contraseña">
+											<input type="password" class="form-control"
+												placeholder="Confirmar contraseña">
 										</div>
 									</div>
 								</div>
+							</ng-template>
+						</li>
+						<li [ngbNavItem]="3">
+							<a ngbNavLink>
+								Rol
+							</a>
+							<ng-template ngbNavContent>
+								...
 							</ng-template>
 						</li>
 					</ul>
@@ -463,5 +512,5 @@
 				</div>
 			</div><!-- end card-body -->
 		</div><!-- end card -->
-	</div> 
+	</div>
 </div>
