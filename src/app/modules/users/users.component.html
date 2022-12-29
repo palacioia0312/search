@@ -22,14 +22,14 @@
 								</select>
 							</div>
 							<div>
-								<button class="btn btn-success" (click)="isNewUser = !isNewUser">Nuevo</button>
+								<button class="btn btn-success" (click)="isShowInformation = false; isNewUser = true">Nuevo</button>
 							</div>
 						</div>
 					</div>
 					<div class="mx-n3">
-						<ngx-simplebar style="max-height: 220px;" class="px-3">
+						<ngx-simplebar style="max-height: 450px;" class="px-3">
 							<div class="content-users">
-								<div class="content-user">
+								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
 									<div class="content">
 										<div class="content-img">
 											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -68,7 +68,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="content-user">
+								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
 									<div class="content">
 										<div class="content-img">
 											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -107,7 +107,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="content-user">
+								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
 									<div class="content">
 										<div class="content-img">
 											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -146,7 +146,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="content-user">
+								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
 									<div class="content">
 										<div class="content-img">
 											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -185,7 +185,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="content-user">
+								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
 									<div class="content">
 										<div class="content-img">
 											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -224,7 +224,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="content-user">
+								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
 									<div class="content">
 										<div class="content-img">
 											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -263,7 +263,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="content-user">
+								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
 									<div class="content">
 										<div class="content-img">
 											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -420,50 +420,50 @@
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Nombre</label>
-										<input type="password" class="form-control" placeholder="Jhon">
+										<input type="text" class="form-control" placeholder="Jhon" disabled>
 									</div>
 									<div class="col">
 										<label for="basiInput" class="form-label">Apellido</label>
-										<input type="password" class="form-control" placeholder="Doe">
+										<input type="text" class="form-control" placeholder="Doe" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Tipo de documento</label>
-										<input type="password" class="form-control" placeholder="Cedula">
+										<input type="text" class="form-control" placeholder="Cedula" disabled>
 									</div>
 									<div class="col">
 										<label for="basiInput" class="form-label">Número de documento</label>
-										<input type="password" class="form-control" placeholder="72335987">
+										<input type="text" class="form-control" placeholder="72335987" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Telefono</label>
-										<input type="password" class="form-control" placeholder="3218769898">
+										<input type="text" class="form-control" placeholder="3218769898" mask="(000)000-0000" disabled>
 
 									</div>
 									<div class="col">
 										<label for="basiInput" class="form-label">Dirección</label>
-										<input type="password" class="form-control" placeholder="Carrera 56 # 37 - 43">
+										<input type="text" class="form-control" placeholder="Carrera 56 # 37 - 43" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Email</label>
-										<input type="password" class="form-control" placeholder="jhon.doe@gmail.com">
+										<input type="text" class="form-control" placeholder="jhon.doe@gmail.com" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Nickname</label>
-										<input type="password" class="form-control" placeholder="jhond23">
+										<input type="text" class="form-control" placeholder="jhond23" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Rol</label>
-										<input type="password" class="form-control" placeholder="Agente comercial">
+										<input type="text" class="form-control" placeholder="Agente comercial" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -492,6 +492,13 @@
 										</div>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col text-end">
+										<button type="button"
+											class="btn btn-soft-primary waves-effect waves-light">Cancelar</button>
+											<button class="btn btn-success btn-save">Actualizar</button>
+									</div>
+								</div>
 							</ng-template>
 						</li>
 						<li [ngbNavItem]="3">
@@ -499,7 +506,94 @@
 								Rol
 							</a>
 							<ng-template ngbNavContent>
-								...
+								<div class="row content-current-rol">
+									<div class="col-auto pt-2">
+										<h4 class="mb-3">Rol actual: <b>Vendendor</b></h4>
+									</div>
+									<div class="col">
+										<button class="btn btn-danger">Remover rol al usuario</button>
+									</div>
+								</div>
+
+								<div class="content-all-rol mt-3">
+									<div class="row">
+										<div class="col">
+											<span>Seleccion el rol que desea asignar al usuario</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="form-check mb-2">
+												<input class="form-check-input" type="radio" name="flexRadioDefault"
+													id="flexRadioDefault1">
+												<label class="form-check-label" for="flexRadioDefault1">
+													Rol 1
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="form-check mb-2">
+												<input class="form-check-input" type="radio" name="flexRadioDefault"
+													id="flexRadioDefault1">
+												<label class="form-check-label" for="flexRadioDefault1">
+													Rol 2
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="form-check mb-2">
+												<input class="form-check-input" type="radio" name="flexRadioDefault"
+													id="flexRadioDefault1">
+												<label class="form-check-label" for="flexRadioDefault1">
+													Rol 3
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="form-check mb-2">
+												<input class="form-check-input" type="radio" name="flexRadioDefault"
+													id="flexRadioDefault1">
+												<label class="form-check-label" for="flexRadioDefault1">
+													Rol 4
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="form-check mb-2">
+												<input class="form-check-input" type="radio" name="flexRadioDefault"
+													id="flexRadioDefault1">
+												<label class="form-check-label" for="flexRadioDefault1">
+													Rol 5
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="form-check mb-2">
+												<input class="form-check-input" type="radio" name="flexRadioDefault"
+													id="flexRadioDefault1">
+												<label class="form-check-label" for="flexRadioDefault1">
+													Rol 6
+												</label>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col text-end">
+											<button class="btn btn-success">Actualizar</button>
+										</div>
+									</div>
+								</div>
 							</ng-template>
 						</li>
 					</ul>

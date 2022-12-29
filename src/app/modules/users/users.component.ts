@@ -7,7 +7,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class UsersComponent implements OnInit {
 	isNewUser: boolean = false;
-	isShowInformation: boolean = true;
+	isShowInformation: boolean = false;
 
 	constructor() {}
 
