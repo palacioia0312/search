@@ -4,25 +4,16 @@ import {
 	UntypedFormGroup,
 	Validators,
 } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-
-// Login Auth
-import { environment } from "src/environments/environment";
-import { AuthenticationService } from "src/app/core/services/auth.service";
-import { AuthfakeauthenticationService } from "src/app/core/services/authfake.service";
-import { first } from "rxjs/operators";
-import { ToastService } from "../../dashboards/dashboard/toast-service";
+import { Router } from "@angular/router";
+import { AuthService } from "src/app/core/services/auth/auth.service";
+import { TokenStorageService } from "src/app/core/services/token-storage.service";
+import { TextService } from "src/app/core/services/utils/text.service";
 
 @Component({
 	selector: "app-login",
 	templateUrl: "./sign-in.component.html",
 })
-
-/**
- * Login Component
- */
 export class SignInComponent implements OnInit {
-	// Login Form
 	loginForm!: UntypedFormGroup;
 	submitted = false;
 	fieldTextType!: boolean;
@@ -31,98 +22,79 @@ export class SignInComponent implements OnInit {
 
 	toast!: false;
 
-	// set the current year
 	year: number = new Date().getFullYear();
+
+	alert: { type: string; message: string; active: boolean } = {
+		type: "success",
+		message: "",
+		active: false,
+	};
 
 	constructor(
 		private formBuilder: UntypedFormBuilder,
-		private authenticationService: AuthenticationService,
-		private router: Router,
-		private authFackservice: AuthfakeauthenticationService,
-		private route: ActivatedRoute,
-		public toastService: ToastService
-	) {
-		// redirect to home if already logged in
-		if (this.authenticationService.currentUserValue) {
-			this.router.navigate(["/"]);
-		}
-	}
+		private _authService: AuthService,
+		private _router: Router,
+		private _tokenStorage: TokenStorageService
+	) {}
 
 	ngOnInit(): void {
-		if (localStorage.getItem("currentUser")) {
-			this.router.navigate(["/"]);
-		}
-		/**
-		 * Form Validatyion
-		 */
 		this.loginForm = this.formBuilder.group({
-			email: [
-				"admin@themesbrand.com",
-				[Validators.required, Validators.email],
-			],
-			password: ["123456", [Validators.required]],
+			username: ["", [Validators.required]],
+			password: ["", [Validators.required]],
 		});
-		// get return url from route parameters or default to '/'
-		// this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 	}
 
-	// convenience getter for easy access to form fields
 	get f() {
 		return this.loginForm.controls;
 	}
 
-	/**
-	 * Form submit
-	 */
 	onSubmit() {
-		this.submitted = true;
-
-		// Login Api
-		this.authenticationService
-			.login(this.f["email"].value, this.f["password"].value)
-			.subscribe((data: any) => {
-				if (data.status == "success") {
-					localStorage.setItem("toast", "true");
-					localStorage.setItem(
-						"currentUser",
-						JSON.stringify(data.data)
-					);
-					localStorage.setItem("token", data.token);
-					this.router.navigate(["/"]);
-				} else {
-					this.toastService.show(data.data, {
-						classname: "bg-danger text-white",
-						delay: 15000,
-					});
-				}
+		if (this.loginForm.invalid) {
+			this.fnShowAlert({
+				type: "error",
+				message: "Ingrese todos los campos",
 			});
+			return;
+		}
 
-		// stop here if form is invalid
-		// if (this.loginForm.invalid) {
-		//   return;
-		// } else {
-		//   if (environment.defaultauth === 'firebase') {
-		//     this.authenticationService.login(this.f['email'].value, this.f['password'].value).then((res: any) => {
-		//       this.router.navigate(['/']);
-		//     })
-		//       .catch(error => {
-		//         this.error = error ? error : '';
-		//       });
-		//   } else {
-		//     this.authFackservice.login(this.f['email'].value, this.f['password'].value).pipe(first()).subscribe(data => {
-		//           this.router.navigate(['/']);
-		//         },
-		//         error => {
-		//           this.error = error ? error : '';
-		//         });
-		//   }
-		// }
+		this.submitted = true;
+		this.loginForm.disable();
+
+		this._authService
+			.signIn(
+				{
+					...this.loginForm.value,
+					tenantId: "00E316D7-BFAF-43B5-B58F-11DC899F696B",
+				},
+				(content: any) => {
+					this.fnShowAlert({
+						type: "error",
+						message: content.message,
+					});
+				},
+				(content: any) => {
+					this.fnShowAlert({
+						type: "success",
+						message: "Ingreso correctamente",
+					});
+					this._router.navigate(['/users'])
+				}
+			)
+			.then(() => {
+				this.submitted = false;
+				this.loginForm.enable();
+			});
 	}
 
-	/**
-	 * Password Hide/Show
-	 */
 	toggleFieldTextType() {
 		this.fieldTextType = !this.fieldTextType;
+	}
+
+	fnShowAlert(content: { type: string; message: string }): void {
+		this.alert = { ...content, active: true };
+
+		setTimeout(() => {
+			this.alert.active = false;
+		}, 2500);
 	}
 }

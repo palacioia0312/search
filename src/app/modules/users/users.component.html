@@ -29,279 +29,47 @@
 					<div class="mx-n3">
 						<ngx-simplebar style="max-height: 450px;" class="px-3">
 							<div class="content-users">
-								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
-									<div class="content">
-										<div class="content-img">
-											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
-												alt="">
-										</div>
-										<div class="content-info w-75">
-											<div class="content-info-basics">
-												<div class="content-info-name">
-													<span>Jhon Doe</span>
-												</div>
-												<div class="content-info-email">
-													<span>jhon.doe@gmail.com</span>
-												</div>
-												<div class="content-info-number">
-													<span>(321) 456 45 67</span>
-												</div>
+								<ng-container *ngFor="let user of listUsers">
+									<div class="content-user" (click)="currentUser = user; isNewUser = false; isShowInformation = true;">
+										<div class="content">
+											<div class="content-img">
+												<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
+													alt="">
 											</div>
-											<div class="content-date-info">
-												<div class="content-date-info-top">
-													<span class="title">
-														Creación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
+											<div class="content-info w-75">
+												<div class="content-info-basics">
+													<div class="content-info-name">
+														<span>{{user.name}} {{user.lastname}}</span>
+													</div>
+													<div class="content-info-email">
+														<span>{{user.email}}</span>
+													</div>
+													<div class="content-info-number">
+														<span>{{user.telephone}}</span>
+													</div>
 												</div>
-												<div class="content-date-info-botton">
-													<span class="title">
-														Modificación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
-									<div class="content">
-										<div class="content-img">
-											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
-												alt="">
-										</div>
-										<div class="content-info w-75">
-											<div class="content-info-basics">
-												<div class="content-info-name">
-													<span>Jhon Doe</span>
-												</div>
-												<div class="content-info-email">
-													<span>jhon.doe@gmail.com</span>
-												</div>
-												<div class="content-info-number">
-													<span>(321) 456 45 67</span>
-												</div>
-											</div>
-											<div class="content-date-info">
-												<div class="content-date-info-top">
-													<span class="title">
-														Creación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-												<div class="content-date-info-botton">
-													<span class="title">
-														Modificación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
+												<div class="content-date-info">
+													<div class="content-date-info-top">
+														<span class="title">
+															Creación:
+														</span>
+														<span class="value">
+															{{user.createdOn}}
+														</span>
+													</div>
+													<div class="content-date-info-botton">
+														<span class="title">
+															Modificación:
+														</span>
+														<span class="value">
+															{{user.modifieddOn || 'No ha sido modificado'}}
+														</span>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
-									<div class="content">
-										<div class="content-img">
-											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
-												alt="">
-										</div>
-										<div class="content-info w-75">
-											<div class="content-info-basics">
-												<div class="content-info-name">
-													<span>Jhon Doe</span>
-												</div>
-												<div class="content-info-email">
-													<span>jhon.doe@gmail.com</span>
-												</div>
-												<div class="content-info-number">
-													<span>(321) 456 45 67</span>
-												</div>
-											</div>
-											<div class="content-date-info">
-												<div class="content-date-info-top">
-													<span class="title">
-														Creación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-												<div class="content-date-info-botton">
-													<span class="title">
-														Modificación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
-									<div class="content">
-										<div class="content-img">
-											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
-												alt="">
-										</div>
-										<div class="content-info w-75">
-											<div class="content-info-basics">
-												<div class="content-info-name">
-													<span>Jhon Doe</span>
-												</div>
-												<div class="content-info-email">
-													<span>jhon.doe@gmail.com</span>
-												</div>
-												<div class="content-info-number">
-													<span>(321) 456 45 67</span>
-												</div>
-											</div>
-											<div class="content-date-info">
-												<div class="content-date-info-top">
-													<span class="title">
-														Creación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-												<div class="content-date-info-botton">
-													<span class="title">
-														Modificación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
-									<div class="content">
-										<div class="content-img">
-											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
-												alt="">
-										</div>
-										<div class="content-info w-75">
-											<div class="content-info-basics">
-												<div class="content-info-name">
-													<span>Jhon Doe</span>
-												</div>
-												<div class="content-info-email">
-													<span>jhon.doe@gmail.com</span>
-												</div>
-												<div class="content-info-number">
-													<span>(321) 456 45 67</span>
-												</div>
-											</div>
-											<div class="content-date-info">
-												<div class="content-date-info-top">
-													<span class="title">
-														Creación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-												<div class="content-date-info-botton">
-													<span class="title">
-														Modificación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
-									<div class="content">
-										<div class="content-img">
-											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
-												alt="">
-										</div>
-										<div class="content-info w-75">
-											<div class="content-info-basics">
-												<div class="content-info-name">
-													<span>Jhon Doe</span>
-												</div>
-												<div class="content-info-email">
-													<span>jhon.doe@gmail.com</span>
-												</div>
-												<div class="content-info-number">
-													<span>(321) 456 45 67</span>
-												</div>
-											</div>
-											<div class="content-date-info">
-												<div class="content-date-info-top">
-													<span class="title">
-														Creación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-												<div class="content-date-info-botton">
-													<span class="title">
-														Modificación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="content-user" (click)="isNewUser = false; isShowInformation = true;">
-									<div class="content">
-										<div class="content-img">
-											<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
-												alt="">
-										</div>
-										<div class="content-info w-75">
-											<div class="content-info-basics">
-												<div class="content-info-name">
-													<span>Jhon Doe</span>
-												</div>
-												<div class="content-info-email">
-													<span>jhon.doe@gmail.com</span>
-												</div>
-												<div class="content-info-number">
-													<span>(321) 456 45 67</span>
-												</div>
-											</div>
-											<div class="content-date-info">
-												<div class="content-date-info-top">
-													<span class="title">
-														Creación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-												<div class="content-date-info-botton">
-													<span class="title">
-														Modificación:
-													</span>
-													<span class="value">
-														12/12/2022
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+								</ng-container>
 							</div>
 						</ngx-simplebar>
 					</div>
@@ -420,50 +188,50 @@
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Nombre</label>
-										<input type="text" class="form-control" placeholder="Jhon" disabled>
+										<input type="text" class="form-control" [value]="currentUser.name" disabled>
 									</div>
 									<div class="col">
 										<label for="basiInput" class="form-label">Apellido</label>
-										<input type="text" class="form-control" placeholder="Doe" disabled>
+										<input type="text" class="form-control" [value]="currentUser.lastname" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Tipo de documento</label>
-										<input type="text" class="form-control" placeholder="Cedula" disabled>
+										<input type="text" class="form-control" [value]="" disabled>
 									</div>
 									<div class="col">
 										<label for="basiInput" class="form-label">Número de documento</label>
-										<input type="text" class="form-control" placeholder="72335987" disabled>
+										<input type="text" class="form-control" [value]="currentOUser.documentNumber" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Telefono</label>
-										<input type="text" class="form-control" placeholder="3218769898" mask="(000)000-0000" disabled>
+										<input type="text" class="form-control" [value]="currentUser.telephone" mask="(000)000-0000" disabled>
 
 									</div>
 									<div class="col">
 										<label for="basiInput" class="form-label">Dirección</label>
-										<input type="text" class="form-control" placeholder="Carrera 56 # 37 - 43" disabled>
+										<input type="text" class="form-control" [value]="currentOUser.address" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Email</label>
-										<input type="text" class="form-control" placeholder="jhon.doe@gmail.com" disabled>
+										<input type="text" class="form-control" [value]="currentUser.email" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Nickname</label>
-										<input type="text" class="form-control" placeholder="jhond23" disabled>
+										<input type="text" class="form-control" [value]="currentUser.nickname" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Rol</label>
-										<input type="text" class="form-control" placeholder="Agente comercial" disabled>
+										<input type="text" class="form-control" [value]="currentUser.roleName" disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -508,7 +276,7 @@
 							<ng-template ngbNavContent>
 								<div class="row content-current-rol">
 									<div class="col-auto pt-2">
-										<h4 class="mb-3">Rol actual: <b>Vendendor</b></h4>
+										<h4 class="mb-3">Rol actual: <b>{{ currentUser.roleName }}</b></h4>
 									</div>
 									<div class="col">
 										<button class="btn btn-danger">Remover rol al usuario</button>
@@ -521,72 +289,19 @@
 											<span>Seleccion el rol que desea asignar al usuario</span>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col">
-											<div class="form-check mb-2">
-												<input class="form-check-input" type="radio" name="flexRadioDefault"
-													id="flexRadioDefault1">
-												<label class="form-check-label" for="flexRadioDefault1">
-													Rol 1
-												</label>
+									<ng-container *ngFor="let rol of listRols">
+										<div class="row">
+											<div class="col">
+												<div class="form-check mb-2">
+													<input class="form-check-input" type="radio" name="flexRadioDefault"
+														[id]="rol.id">
+													<label class="form-check-label" [for]="rol.id">
+														{{ rol.name }}
+													</label>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<div class="form-check mb-2">
-												<input class="form-check-input" type="radio" name="flexRadioDefault"
-													id="flexRadioDefault1">
-												<label class="form-check-label" for="flexRadioDefault1">
-													Rol 2
-												</label>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<div class="form-check mb-2">
-												<input class="form-check-input" type="radio" name="flexRadioDefault"
-													id="flexRadioDefault1">
-												<label class="form-check-label" for="flexRadioDefault1">
-													Rol 3
-												</label>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<div class="form-check mb-2">
-												<input class="form-check-input" type="radio" name="flexRadioDefault"
-													id="flexRadioDefault1">
-												<label class="form-check-label" for="flexRadioDefault1">
-													Rol 4
-												</label>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<div class="form-check mb-2">
-												<input class="form-check-input" type="radio" name="flexRadioDefault"
-													id="flexRadioDefault1">
-												<label class="form-check-label" for="flexRadioDefault1">
-													Rol 5
-												</label>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<div class="form-check mb-2">
-												<input class="form-check-input" type="radio" name="flexRadioDefault"
-													id="flexRadioDefault1">
-												<label class="form-check-label" for="flexRadioDefault1">
-													Rol 6
-												</label>
-											</div>
-										</div>
-									</div>
+									</ng-container>
 
 									<div class="row">
 										<div class="col text-end">

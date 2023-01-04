@@ -1,39 +1,27 @@
-import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Injectable } from "@angular/core";
+import {
+	CanActivate,
+	ActivatedRouteSnapshot,
+	RouterStateSnapshot,
+	Router,
+} from "@angular/router";
 
 // Auth Services
-import { AuthenticationService } from '../services/auth.service';
-import { AuthfakeauthenticationService } from '../services/authfake.service';
-import { environment } from '../../../environments/environment';
+import { TokenStorageService } from "../services/utils/token-storage.service";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate {
-    constructor(
-        private router: Router,
-        private authenticationService: AuthenticationService,
-        private authFackservice: AuthfakeauthenticationService
-    ) { }
+	constructor(
+		private _storage: TokenStorageService,
+		private _router: Router
+	) {}
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (environment.defaultauth === 'firebase') {
-            const currentUser = this.authenticationService.currentUser();
-            if (currentUser) {
-                // logged in so return true
-                return true;
-            }
-        } else {
-            const currentUser = this.authFackservice.currentUserValue;
-            if (currentUser) {
-                // logged in so return true
-                return true;
-            }
-            // check if user data is in storage is logged in via API.
-            if(localStorage.getItem('currentUser')) {
-                return true;
-            }
-        }
-        // not logged in so redirect to login page with the return url
-        this.router.navigate(['/auth/sign-in'], { queryParams: { returnUrl: state.url } });
-        return false;
-    }
+	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+		if (this._storage.getUser() && this._storage.getToken()) {
+			return true;
+		}
+
+		this._router.navigate(["/auth/sign-in"]);
+		return false;
+	}
 }

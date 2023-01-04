@@ -2,13 +2,6 @@ import { Component, OnInit, EventEmitter, Output, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { EventService } from "src/app/core/services/event.service";
 
-//Logout
-import { environment } from "src/environments/environment";
-import { AuthenticationService } from "src/app/core/services/auth.service";
-import { AuthfakeauthenticationService } from "src/app/core/services/authfake.service";
-import { TokenStorageService } from "src/app/core/services/token-storage.service";
-import { Router } from "@angular/router";
-
 // Language
 import { CookieService } from "ngx-cookie-service";
 import { LanguageService } from "src/app/core/services/language.service";
@@ -16,6 +9,8 @@ import { TranslateService } from "@ngx-translate/core";
 
 import { CartModel } from "./topbar.model";
 import { cartData } from "./data";
+import { AuthService } from "src/app/core/services/auth/auth.service";
+import { TokenStorageService } from "src/app/core/services/utils/token-storage.service";
 
 @Component({
 	selector: "app-topbar",
@@ -42,14 +37,12 @@ export class TopbarComponent implements OnInit {
 		public languageService: LanguageService,
 		public _cookiesService: CookieService,
 		public translate: TranslateService,
-		private authService: AuthenticationService,
-		private authFackservice: AuthfakeauthenticationService,
-		private router: Router,
-		private TokenStorageService: TokenStorageService
+		private _authService: AuthService,
+		private _storage: TokenStorageService
 	) {}
 
 	ngOnInit(): void {
-		this.userData = this.TokenStorageService.getUser();
+		this.userData = this._storage.getUser();
 		this.element = document.documentElement;
 
 		// Cookies wise Language set
@@ -176,13 +169,7 @@ export class TopbarComponent implements OnInit {
 	 * Logout the user
 	 */
 	logout() {
-		this.authService.logout();
-		// if (environment.defaultauth === 'firebase') {
-		//   this.authService.logout();
-		// } else {
-		//   this.authFackservice.logout();
-		// }
-		this.router.navigate(["/auth/sign-out"]);
+		this._authService.logout("00E316D7-BFAF-43B5-B58F-11DC899F696B");
 	}
 
 	windowScroll() {
