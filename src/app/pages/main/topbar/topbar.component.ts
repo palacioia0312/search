@@ -6,7 +6,7 @@ import { EventService } from "src/app/core/services/event.service";
 import { environment } from "src/environments/environment";
 import { AuthenticationService } from "src/app/core/services/auth.service";
 import { AuthfakeauthenticationService } from "src/app/core/services/authfake.service";
-import { TokenStorageService } from "src/app/core/services/token-storage.service";
+import { TokenStorageService } from "src/app/core/services/app/token-storage.service";
 import { Router } from "@angular/router";
 
 // Language
