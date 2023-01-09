@@ -1,5 +1,24 @@
-<div class="row">
-	<div class="col-md-12" [ngClass]="isNewUser || isShowInformation ? 'col-lg-6' : 'col-lg-12'">
+<div class="row" *ngIf="listUsers.length === 0">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				No hay datos
+			</div>
+			<div class="card-body">
+				<span>No hay datos</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" *ngIf="listUsers.length > 0">
+	<div class="col-12">
+		<div class="alert" [ngClass]="{'alert-danger': alert.type == 'error', 'alert-success': alert.type == 'success'}"
+			role="alert" *ngIf="alert.active">
+			<strong>{{ alert.message }}</strong>
+		</div>
+	</div>
+	<div class="col-md-12 col-lg-6">
 		<div class="card">
 			<div class="card-header">
 				Lista de Usuarios
@@ -22,15 +41,22 @@
 								</select>
 							</div>
 							<div>
-								<button class="btn btn-success" (click)="isShowInformation = false; isNewUser = true">Nuevo</button>
+								<button class="btn btn-success"
+									(click)="fnShowNewUser()">Nuevo</button>
 							</div>
 						</div>
 					</div>
 					<div class="mx-n3">
-						<ngx-simplebar style="max-height: 450px;" class="px-3">
+						<div class="row d-flex justify-content-center" *ngIf="isLoadingUser">
+							<div class="spinner-border" role="status">
+								<span class="sr-only">Loading...</span>
+							</div>
+						</div>
+						<ngx-simplebar style="max-height: 450px;" class="px-3" *ngIf="!isLoadingUser">
 							<div class="content-users">
 								<ng-container *ngFor="let user of listUsers">
-									<div class="content-user" (click)="currentUser = user; isNewUser = false; isShowInformation = true;">
+									<div class="content-user" (click)="getUser(user)"
+										[ngClass]="{'active': currentUser.id === user.id}">
 										<div class="content">
 											<div class="content-img">
 												<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
@@ -78,7 +104,7 @@
 			<!-- <div class="card-body">Footer</div> -->
 		</div>
 	</div>
-	<div class="col-md-12" [ngClass]="isNewUser ? 'col-lg-6' : 'd-none'">
+	<div class="col-md-12 col-lg-6" *ngIf="isNewUser">
 		<div class="card">
 			<div class="card-header">Crear Usuarios</div>
 			<div class="card-body">
@@ -162,8 +188,8 @@
 					<div class="row">
 						<div class="col-12 d-flex justify-content-end">
 							<div class="content-actions">
-								<button type="button"
-									class="btn btn-soft-primary waves-effect waves-light">Cancelar</button>
+								<button type="button" class="btn btn-soft-primary waves-effect waves-light"
+									(click)="fnCloseNewUser()">Cancelar</button>
 								<button type="button"
 									class="btn btn-soft-success waves-effect waves-light btn-save">Guardar</button>
 							</div>
@@ -173,8 +199,7 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="col-md-12" [ngClass]="isShowInformation ? 'col-lg-6' : 'd-none'">
+	<div class="col-md-12 col-lg-6" *ngIf="!isNewUser">
 		<div class="card">
 			<div class="card-header align-items-center d-flex">
 				<div class="flex-shrink-0 ms-2">
@@ -202,13 +227,16 @@
 									</div>
 									<div class="col">
 										<label for="basiInput" class="form-label">Número de documento</label>
-										<input type="text" class="form-control" [value]="currentOUser.documentNumber" disabled>
+										<input type="text" class="form-control" [value]="currentOUser.documentNumber"
+											disabled>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="basiInput" class="form-label">Telefono</label>
-										<input type="text" class="form-control" [value]="currentUser.telephone" mask="(000)000-0000" disabled>
+										<input type="text" class="form-control"
+											[value]="currentUser.telephone || currentUser.mobile || currentOUser.mobile"
+											mask="(000)000-0000" disabled>
 
 									</div>
 									<div class="col">
@@ -249,14 +277,16 @@
 								<div class="row mb-3">
 									<div class="col-6">
 										<div class="input-group">
-											<input type="password" class="form-control" placeholder="Contraseña">
+											<input type="password" class="form-control" placeholder="Contraseña"
+												[(ngModel)]="changePassword.oldPassword">
 										</div>
 										<span>Debe tener al menos 8 caracteres</span>
 									</div>
 									<div class="col-6">
 										<div class="input-group">
 											<input type="password" class="form-control"
-												placeholder="Confirmar contraseña">
+												placeholder="Confirmar contraseña"
+												[(ngModel)]="changePassword.password">
 										</div>
 									</div>
 								</div>
@@ -264,12 +294,17 @@
 									<div class="col text-end">
 										<button type="button"
 											class="btn btn-soft-primary waves-effect waves-light">Cancelar</button>
-											<button class="btn btn-success btn-save">Actualizar</button>
+										<button class="btn btn-success btn-save"
+											[disabled]="fnDisabledBtnChangePassword()">
+											<span class="spinner-border spinner-border-sm" role="status"
+												aria-hidden="true" *ngIf="isLoadingChangePassword"></span>
+											{{ isLoadingChangePassword ? 'Loading...' : 'Actualizar'}}
+										</button>
 									</div>
 								</div>
 							</ng-template>
 						</li>
-						<li [ngbNavItem]="3">
+						<li [ngbNavItem]="3" *ngIf="currentUser.roleName">
 							<a ngbNavLink>
 								Rol
 							</a>
@@ -279,7 +314,11 @@
 										<h4 class="mb-3">Rol actual: <b>{{ currentUser.roleName }}</b></h4>
 									</div>
 									<div class="col">
-										<button class="btn btn-danger">Remover rol al usuario</button>
+										<button class="btn btn-danger" [disabled]="isLoadingRemoveRole">
+											<span class="spinner-border spinner-border-sm" role="status"
+												aria-hidden="true" *ngIf="isLoadingRemoveRole"></span>
+											{{ isLoadingRemoveRole ? 'Loading...' : 'Remover rol al usuario'}}
+										</button>
 									</div>
 								</div>
 
@@ -305,7 +344,11 @@
 
 									<div class="row">
 										<div class="col text-end">
-											<button class="btn btn-success">Actualizar</button>
+											<button class="btn btn-success" [disabled]="isLoadingChangeRole">
+												<span class="spinner-border spinner-border-sm" role="status"
+													aria-hidden="true" *ngIf="isLoadingChangeRole"></span>
+												{{ isLoadingChangeRole ? 'Loading...' : 'Actualizar'}}
+											</button>
 										</div>
 									</div>
 								</div>
