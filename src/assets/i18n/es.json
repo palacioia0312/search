@@ -23,6 +23,10 @@
 		"USERS": {
 			"TEXT": "Usuarios"
 		},
+		"CONTRACT": {
+			"TEXT": "Contrato"
+		},
+		
 		"MULTILEVEL": {
 			"TEXT": "Multi nivel",
 			"LIST": {

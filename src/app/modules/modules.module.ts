@@ -26,6 +26,7 @@ import { SwiperConfigInterface } from "ngx-swiper-wrapper";
 import { ModulesRoutingModule } from "./modules-routing.module";
 import { SharedModule } from "../shared/shared.module";
 import { UsersComponent } from "./users/users.component";
+import { ContractComponent } from './contract/contract.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 	direction: "horizontal",
@@ -33,7 +34,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 };
 
 @NgModule({
-	declarations: [UsersComponent],
+	declarations: [UsersComponent, ContractComponent],
 	imports: [
 		ModulesRoutingModule,
 		CommonModule,
