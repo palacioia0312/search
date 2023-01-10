@@ -11,8 +11,11 @@ import User from "src/app/core/types/user/user";
 	styleUrls: ["./users.component.scss"],
 })
 export class UsersComponent implements OnInit {
-
-	alert: { type: string, message: string, active: boolean } = { type: 'success', message: '', active: false };
+	alert: { type: string; message: string; active: boolean } = {
+		type: "success",
+		message: "",
+		active: false,
+	};
 
 	isNewUser: boolean = false;
 	isShowInformation: boolean = false;
@@ -25,7 +28,9 @@ export class UsersComponent implements OnInit {
 	listUsers: User[] = [];
 	listRols: Rol[] = [];
 
-	changePassword: any = { oldPassword: '', password: '' };
+	selectedRole: any;
+
+	changePassword: any = { oldPassword: "", password: "" };
 
 	currentUser: User | any = {
 		id: "",
@@ -58,7 +63,7 @@ export class UsersComponent implements OnInit {
 	constructor(
 		private _userServices: UserService,
 		private _rolServices: RoleService
-	) { }
+	) {}
 
 	ngOnInit(): void {
 		this.loadData();
@@ -67,30 +72,28 @@ export class UsersComponent implements OnInit {
 	loadData(): void {
 		this.isLoadingUser = true;
 
-		this._userServices
-			.getList()
-			.then(({ data }) => {
-				this.listUsers = data
-				if (this.listUsers.length > 0) {
-					this.getUser(this.listUsers[0]);
-				}
+		this._userServices.getList().then(({ data }) => {
+			this.listUsers = data;
+			if (this.listUsers.length > 0) {
+				this.getUser(this.listUsers[0]);
+			}
 
-				this.isLoadingUser = false
-			});
+			this.isLoadingUser = false;
+		});
 
-		this._rolServices.getList().then(({ isError, message, code, data }) => {
+		this._rolServices.getList().then(({ isError, data }) => {
 			if (isError) {
 				return;
 			}
 
-			this.listRols = data
+			this.listRols = data;
 		});
 	}
 
 	async getUser({ id, ...user }: User): Promise<void> {
 		this.isNewUser = false;
 
-		this._userServices.getById(id).then(({ isError, message, code, data }) => {
+		this._userServices.getById(id).then(({ isError, data }) => {
 			if (isError) {
 				return;
 			}
@@ -112,54 +115,90 @@ export class UsersComponent implements OnInit {
 		this.isNewUser = false;
 	}
 
-	fnNewUser(): void { }
+	fnNewUser(): void {}
+
+	fnChangeRol(role: Rol): void {
+		this.selectedRole = role;
+	}
 
 	fnDisabledBtnChangePassword(): boolean {
-		return !this.changePassword.oldPassword || !this.changePassword.password || this.changePassword.password.length < 8;
+		return (
+			!this.changePassword.oldPassword ||
+			!this.changePassword.password ||
+			this.changePassword.password.length < 8
+		);
 	}
 
 	fnChangePassword(): void {
 		this.isLoadingChangePassword = true;
-		this._userServices.changePassowrd(this.changePassword).then(({ isError, data, message }) => {
-			if (isError) {
-				this.fnShowAlert({ type: 'error', message }, () => { });
-				return;
-			}
+		this._userServices
+			.changePassowrd(this.changePassword)
+			.then(({ isError, data, message }) => {
+				if (isError) {
+					this.fnShowAlert({ type: "error", message }, () => {});
+					return;
+				}
 
-			this.fnShowAlert({ type: ' success', message: message ?? 'Cambio realizado correctamente' }, () => { });
-			this.isLoadingChangePassword = false;
-		});
+				this.fnShowAlert(
+					{
+						type: " success",
+						message: message ?? "Cambio realizado correctamente",
+					},
+					() => {}
+				);
+				this.isLoadingChangePassword = false;
+			});
 	}
 
 	fnRemoveRole(): void {
-		this._rolServices.deleteUserToRole('', this.currentUser.id).then(({ isError, data, message }) => {
-			if (isError) {
-				this.fnShowAlert({ type: 'error', message }, () => { });
-				return;
-			}
+		this._rolServices
+			.deleteUserToRole("", this.currentUser.id)
+			.then(({ isError, message }) => {
+				if (isError) {
+					this.fnShowAlert({ type: "error", message }, () => {});
+					return;
+				}
 
-			this.fnShowAlert({ type: ' success', message: message ?? 'Cambio realizado correctamente' }, () => { });
-			this.isLoadingRemoveRole = false;
-		});
+				this.fnShowAlert(
+					{
+						type: " success",
+						message: message ?? "Cambio realizado correctamente",
+					},
+					() => {}
+				);
+				this.isLoadingRemoveRole = false;
+			});
 	}
 
 	fnChangeRole(): void {
-		this._rolServices.changeUserToRole('', this.currentUser.id).then(({ isError, data, message }) => {
-			if (isError) {
-				this.fnShowAlert({ type: 'error', message }, () => { });
-				return;
-			}
+		this.isLoadingChangeRole = true;
+		this._rolServices
+			.changeUserToRole(this.selectedRole.id, this.currentUser.id)
+			.then(({ isError, message }) => {
+				if (isError) {
+					this.fnShowAlert({ type: "error", message }, () => {});
+					return;
+				}
 
-			this.fnShowAlert({ type: ' success', message: message ?? 'Cambio realizado correctamente' }, () => { });
-			this.isLoadingChangeRole = false;
-		});
+				this.fnShowAlert(
+					{
+						type: "success",
+						message: message || "Cambio realizado correctamente",
+					},
+					() => {}
+				);
+				this.isLoadingChangeRole = false;
+			});
 	}
 
-	fnShowAlert(content: { type: string, message: string }, callback: () => any): void {
+	fnShowAlert(
+		content: { type: string; message: string },
+		callback: () => any
+	): void {
 		this.alert = {
 			...content,
-			active: true
-		}
+			active: true,
+		};
 
 		setTimeout(() => {
 			this.alert.active = false;
