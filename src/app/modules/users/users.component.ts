@@ -1,7 +1,11 @@
 import { Component, OnInit } from "@angular/core";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+
 import { RoleService } from "src/app/core/services/app/role.service";
 import { UserService } from "src/app/core/services/user/user.service";
+import { OptionListService } from "src/app/core/services/utils/option-list.service";
 import Rol from "src/app/core/types/rol/rol";
+import nUser from "src/app/core/types/user/nUser";
 import oUser from "src/app/core/types/user/oUser";
 import User from "src/app/core/types/user/user";
 
@@ -27,10 +31,26 @@ export class UsersComponent implements OnInit {
 
 	listUsers: User[] = [];
 	listRols: Rol[] = [];
+	listDocumentType: any[] = [];
 
 	selectedRole: any;
 
 	changePassword: any = { oldPassword: "", password: "" };
+
+	newUser: nUser = {
+		address: "",
+		documentNumber: "",
+		documentTypeId: "none",
+		email: "",
+		lastname: "",
+		mobile: "",
+		name: "",
+		nickname: "",
+		password: "",
+		playerIdPush: ""
+	}
+
+	newUserForm!: UntypedFormGroup;
 
 	currentUser: User | any = {
 		id: "",
@@ -61,11 +81,17 @@ export class UsersComponent implements OnInit {
 	};
 
 	constructor(
+		private formBuilder: UntypedFormBuilder,
 		private _userServices: UserService,
-		private _rolServices: RoleService
+		private _rolServices: RoleService,
+		private _optionListServices: OptionListService
 	) {}
 
 	ngOnInit(): void {
+		this.newUserForm = this.formBuilder.group({
+			
+		});
+
 		this.loadData();
 	}
 
@@ -88,6 +114,16 @@ export class UsersComponent implements OnInit {
 
 			this.listRols = data;
 		});
+
+		this._optionListServices
+			.getListByKey("DOCUMENT")
+			.then(({ isError, data }) => {
+				if (isError) {
+					return;
+				}
+
+				this.listDocumentType = data;
+			});
 	}
 
 	async getUser({ id, ...user }: User): Promise<void> {
@@ -115,7 +151,9 @@ export class UsersComponent implements OnInit {
 		this.isNewUser = false;
 	}
 
-	fnNewUser(): void {}
+	fnNewUser(): void {
+		console.log(this.newUser);
+	}
 
 	fnChangeRol(role: Rol): void {
 		this.selectedRole = role;

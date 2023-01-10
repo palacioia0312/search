@@ -111,12 +111,12 @@
 					<div class="row mb-3">
 						<div class="col-6">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Nombre">
+								<input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="newUser.name">
 							</div>
 						</div>
 						<div class="col-6">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Apellido">
+								<input type="text" class="form-control" placeholder="Apellido" [(ngModel)]="newUser.lastname">
 							</div>
 						</div>
 					</div>
@@ -124,16 +124,17 @@
 					<div class="row mb-3">
 						<div class="col-6">
 							<div class="input-group">
-								<select class="form-select">
-									<option selected disabled>Tipo documento</option>
-									<option value="TI">TI</option>
-									<option value="CC">CC</option>
+								<select class="form-select" [(ngModel)]="newUser.documentTypeId">
+									<option selected disabled value="none">Seleccionar tipo de documento</option>
+									<ng-container *ngFor="let item of listDocumentType">
+										<option [value]="item.id">{{ item.name }}</option>
+									</ng-container>
 								</select>
 							</div>
 						</div>
 						<div class="col-6">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Número de documento">
+								<input type="text" class="form-control" placeholder="Número de documento" [(ngModel)]="newUser.documentNumber">
 							</div>
 						</div>
 					</div>
@@ -141,12 +142,12 @@
 					<div class="row mb-3">
 						<div class="col-6">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Teléfono">
+								<input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="newUser.mobile">
 							</div>
 						</div>
 						<div class="col-6">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Dirección">
+								<input type="text" class="form-control" placeholder="Dirección" [(ngModel)]="newUser.address">
 							</div>
 						</div>
 					</div>
@@ -154,7 +155,7 @@
 					<div class="row mb-3">
 						<div class="col-12">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Email">
+								<input type="text" class="form-control" placeholder="Email" [(ngModel)]="newUser.email">
 							</div>
 						</div>
 					</div>
@@ -162,27 +163,28 @@
 					<div class="row mb-3">
 						<div class="col-6">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Nombre de usuario">
+								<input type="text" class="form-control" placeholder="Nombre de usuario" [(ngModel)]="newUser.nickname">
 							</div>
 						</div>
 						<div class="col-6">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Contraseña">
+								<input type="text" class="form-control" placeholder="Contraseña" [(ngModel)]="newUser.password">
 							</div>
 						</div>
 					</div>
 
-					<div class="row mb-3">
+					<!-- <div class="row mb-3">
 						<div class="col-6">
 							<div class="input-group">
 								<select class="form-select">
-									<option selected disabled>Seleccionar rol</option>
-									<option value="TI">TI</option>
-									<option value="CC">CC</option>
+									<option selected disabled>Seleccionar rol</option>.
+									<ng-container *ngFor="let rol of listRols">
+										<option [value]="rol.id">{{ rol.name }}</option>
+									</ng-container>
 								</select>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<div class="row">
 						<div class="col-12 d-flex justify-content-end">
@@ -190,7 +192,7 @@
 								<button type="button" class="btn btn-soft-primary waves-effect waves-light"
 									(click)="fnCloseNewUser()">Cancelar</button>
 								<button type="button"
-									class="btn btn-soft-success waves-effect waves-light btn-save">Guardar</button>
+									class="btn btn-soft-success waves-effect waves-light btn-save" (click)="fnNewUser()">Guardar</button>
 							</div>
 						</div>
 					</div>

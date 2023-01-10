@@ -5,6 +5,10 @@ import { RestApiService } from "../api/rest-api.service";
 	providedIn: "root",
 })
 export class OptionListService {
+
+	data: any = {
+	};
+
 	constructor(private _api: RestApiService) {}
 
 	async getById(id: string): Promise<any> {
@@ -20,7 +24,13 @@ export class OptionListService {
 	}
 
 	async getDetailListByKey(key: string): Promise<any> {
-		return await this._api.get("item/detail/" + key + "/list");
+		if (this.data.hasOwnProperty(key) && this.data[key].length > 0) {
+			return this.data[key];
+		} 
+		const response = await this._api.get("item/detail/" + key + "/list");
+		this.data[key] = await response;
+
+		return await this.data[key];
 	}
 
 	async create(content: any): Promise<any> {
