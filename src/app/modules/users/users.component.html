@@ -103,104 +103,226 @@
 			<!-- <div class="card-body">Footer</div> -->
 		</div>
 	</div>
-	<div class="col-md-12 col-lg-6" *ngIf="isNewUser">
+	<div class="col-md-12 col-lg-6" *ngIf="isNewUser || isEditUser">
 		<div class="card">
-			<div class="card-header">Crear Usuarios</div>
+			<div class="card-header">{{ isEditUser ? 'Actualizar Usuario' : 'Crear Usuarios'}}</div>
 			<div class="card-body">
-				<div class="content-new-user">
-					<div class="row mb-3">
-						<div class="col-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="newUser.name">
+				<form (ngSubmit)="fnNewUser()" [formGroup]="newUserForm">
+					<div class="content-new-user">
+						<div class="row mb-3">
+							<div class="col-6">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Nombre" formControlName="name"
+										maxlength="30">
+								</div>
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['name'].invalid" class="pl-2">
+										<span *ngIf="f['name'].errors?.['required']" class="text-danger">
+											El nombre es requerido.
+										</span>
+										<span *ngIf="f['name'].errors?.['maxlength']" class="text-danger">
+											Son maximo 30 caracteres.
+										</span>
+										<span *ngIf="f['name'].errors?.['pattern']" class="text-danger">
+											No debe de contener número.
+										</span>
+									</div>
+								</ng-container>
+							</div>
+							<div class="col-6">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Apellido"
+										formControlName="lastname" maxlength="50">
+								</div>
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['lastname'].invalid" class="pl-2">
+										<span *ngIf="f['lastname'].errors?.['required']" class="text-danger">
+											El apellido es requerido.
+										</span>
+										<span *ngIf="f['lastname'].errors?.['maxlength']" class="text-danger">
+											Son maximo 50 caracteres.
+										</span>
+										<span *ngIf="f['lastname'].errors?.['pattern']" class="text-danger">
+											No debe de contener número.
+										</span>
+									</div>
+								</ng-container>
 							</div>
 						</div>
-						<div class="col-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Apellido" [(ngModel)]="newUser.lastname">
+
+						<div class="row mb-3">
+							<div class="col-6">
+								<div class="input-group">
+									<select class="form-select">
+										<option selected disabled value="none">Seleccionar tipo de documento</option>
+										<ng-container *ngFor="let item of listDocumentType">
+											<option [value]="item.id">{{ item.name }}</option>
+										</ng-container>
+									</select>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Número de documento"
+										maxlength="20" formControlName="documentNumber">
+								</div>
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['documentNumber'].invalid" class="pl-2">
+										<span *ngIf="f['documentNumber'].errors?.['required']" class="text-danger">
+											El documento es requerido.
+										</span>
+										<span *ngIf="f['documentNumber'].errors?.['maxlength']" class="text-danger">
+											Son maximo 20 caracteres.
+										</span>
+										<span *ngIf="f['documentNumber'].errors?.['pattern']" class="text-danger">
+											No debe de contener tildes, guiones bajos ni espacios.
+										</span>
+									</div>
+								</ng-container>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-6">
+								<div class="input-group">
+									<input type="number" class="form-control" placeholder="Teléfono" maxlength="10"
+										formControlName="mobile">
+								</div>
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['mobile'].invalid" class="pl-2">
+										<span *ngIf="f['mobile'].errors?.['required']" class="text-danger">
+											El telefono es requerido.
+										</span>
+										<span *ngIf="f['mobile'].errors?.['maxlength']" class="text-danger">
+											Son maximo 10 caracteres.
+										</span>
+										<span *ngIf="f['mobile'].errors?.['pattern']" class="text-danger">
+											No debe de contener texto ni espacios.
+										</span>
+									</div>
+								</ng-container>
+							</div>
+							<div class="col-6">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Dirección" maxlength="100"
+										formControlName="address">
+								</div>
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['address'].invalid" class="pl-2">
+										<span *ngIf="f['address'].errors?.['required']" class="text-danger">
+											El dirección es requerida.
+										</span>
+										<span *ngIf="f['address'].errors?.['maxlength']" class="text-danger">
+											Son maximo 100 caracteres.
+										</span>
+										<span *ngIf="f['address'].errors?.['pattern']" class="text-danger">
+											No debe de contener texto ni espacios.
+										</span>
+									</div>
+								</ng-container>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-12">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Email" formControlName="email">
+								</div>
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['email'].invalid" class="pl-2">
+										<span *ngIf="f['email'].errors?.['required']" class="text-danger">
+											El correo electronico es requerido.
+										</span>
+										<span *ngIf="f['email'].errors?.['email']" class="text-danger">
+											Ingrese un correo valido.
+										</span>
+									</div>
+								</ng-container>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-6">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Nombre de usuario"
+										maxlength="20" minlength="8" formControlName="nickname">
+								</div>
+
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['nickname'].invalid" class="pl-2">
+										<span *ngIf="f['nickname'].errors?.['required']" class="text-danger">
+											El nombre de usuario es requerido.
+										</span>
+										<span *ngIf="f['nickname'].errors?.['maxlength']" class="text-danger">
+											Son maximo 20 caracteres.
+										</span>
+										<span *ngIf="f['nickname'].errors?.['minlength']" class="text-danger">
+											Son minimo 8 caracteres.
+										</span>
+										<span *ngIf="f['nickname'].errors?.['pattern']" class="text-danger">
+											No debe de contener texto ni espacios.
+										</span>
+									</div>
+								</ng-container>
+							</div>
+							<div class="col-6" *ngIf="!isEditUser">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Contraseña" maxlength="20"
+										minlength="8" formControlName="password">
+								</div>
+								<ng-container *ngIf="isLoadingNewUser">
+									<div *ngIf="f['password'].invalid" class="pl-2">
+										<span *ngIf="f['password'].errors?.['required']" class="text-danger">
+											La contraseña es requerida.
+										</span>
+										<span *ngIf="f['password'].errors?.['maxlength']" class="text-danger">
+											Son maximo 20 caracteres.
+										</span>
+										<span *ngIf="f['password'].errors?.['minlength']" class="text-danger">
+											Son minimo 8 caracteres.
+										</span>
+										<span *ngIf="f['password'].errors?.['pattern']" class="text-danger">
+											Solo se permiten texto con caracteres especiales como asterisco, punto,
+											guion, guion al piso.
+										</span>
+									</div>
+								</ng-container>
+							</div>
+						</div>
+
+						<!-- <div class="row mb-3">
+							<div class="col-6">
+								<div class="input-group">
+									<select class="form-select">
+										<option selected disabled>Seleccionar rol</option>.
+										<ng-container *ngFor="let rol of listRols">
+											<option [value]="rol.id">{{ rol.name }}</option>
+										</ng-container>
+									</select>
+								</div>
+							</div>
+						</div> -->
+
+						<div class="row">
+							<div class="col-12 d-flex justify-content-end">
+								<div class="content-actions">
+									<button type="button" class="btn btn-soft-primary waves-effect waves-light"
+										(click)="fnCloseNewUser()">Cancelar</button>
+									<button class="btn btn-soft-success waves-effect waves-light btn-save"
+										[disabled]="isLoadingNewUser" type="submit">
+										<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+											*ngIf="isLoadingNewUser"></span>
+										{{ isLoadingNewUser ? 'Cargando...' : isEditUser ? 'Actualizar' : 'Guardar'}}
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
-
-					<div class="row mb-3">
-						<div class="col-6">
-							<div class="input-group">
-								<select class="form-select" [(ngModel)]="newUser.documentTypeId">
-									<option selected disabled value="none">Seleccionar tipo de documento</option>
-									<ng-container *ngFor="let item of listDocumentType">
-										<option [value]="item.id">{{ item.name }}</option>
-									</ng-container>
-								</select>
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Número de documento" [(ngModel)]="newUser.documentNumber">
-							</div>
-						</div>
-					</div>
-
-					<div class="row mb-3">
-						<div class="col-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="newUser.mobile">
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Dirección" [(ngModel)]="newUser.address">
-							</div>
-						</div>
-					</div>
-
-					<div class="row mb-3">
-						<div class="col-12">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Email" [(ngModel)]="newUser.email">
-							</div>
-						</div>
-					</div>
-
-					<div class="row mb-3">
-						<div class="col-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Nombre de usuario" [(ngModel)]="newUser.nickname">
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Contraseña" [(ngModel)]="newUser.password">
-							</div>
-						</div>
-					</div>
-
-					<!-- <div class="row mb-3">
-						<div class="col-6">
-							<div class="input-group">
-								<select class="form-select">
-									<option selected disabled>Seleccionar rol</option>.
-									<ng-container *ngFor="let rol of listRols">
-										<option [value]="rol.id">{{ rol.name }}</option>
-									</ng-container>
-								</select>
-							</div>
-						</div>
-					</div> -->
-
-					<div class="row">
-						<div class="col-12 d-flex justify-content-end">
-							<div class="content-actions">
-								<button type="button" class="btn btn-soft-primary waves-effect waves-light"
-									(click)="fnCloseNewUser()">Cancelar</button>
-								<button type="button"
-									class="btn btn-soft-success waves-effect waves-light btn-save" (click)="fnNewUser()">Guardar</button>
-							</div>
-						</div>
-					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12 col-lg-6" *ngIf="!isNewUser">
+	<div class="col-md-12 col-lg-6" *ngIf="!isNewUser && !isEditUser">
 		<div class="card">
 			<div class="card-header align-items-center d-flex">
 				<div class="flex-shrink-0 ms-2">
@@ -265,7 +387,7 @@
 								</div>
 								<div class="row mb-3">
 									<div class="col text-end">
-										<button class="btn btn-success">Editar</button>
+										<button class="btn btn-success" (click)="fnShowEditUser()">Editar</button>
 									</div>
 								</div>
 							</ng-template>
@@ -315,7 +437,8 @@
 										<h4 class="mb-3">Rol actual: <b>{{ currentUser.roleName }}</b></h4>
 									</div>
 									<div class="col">
-										<button class="btn btn-danger" [disabled]="isLoadingRemoveRole" (click)="fnRemoveRole()">
+										<button class="btn btn-danger" [disabled]="isLoadingRemoveRole"
+											(click)="fnRemoveRole()">
 											<span class="spinner-border spinner-border-sm" role="status"
 												aria-hidden="true" *ngIf="isLoadingRemoveRole"></span>
 											{{ isLoadingRemoveRole ? 'Cargando...' : 'Remover rol al usuario'}}
@@ -334,7 +457,7 @@
 											<div class="row">
 												<div class="col">
 													<div class="form-check mb-2">
-														<input class="form-check-input" type="radio" 
+														<input class="form-check-input" type="radio"
 															[name]="'radioRole-' + rol.id" (click)="fnChangeRol(rol)"
 															[id]="rol.id">
 														<label class="form-check-label" [for]="rol.id">
@@ -347,7 +470,8 @@
 									</fieldset>
 									<div class="row">
 										<div class="col text-end">
-											<button class="btn btn-success" [disabled]="isLoadingChangeRole" (click)="fnChangeRole()">
+											<button class="btn btn-success" [disabled]="isLoadingChangeRole"
+												(click)="fnChangeRole()">
 												<span class="spinner-border spinner-border-sm" role="status"
 													aria-hidden="true" *ngIf="isLoadingChangeRole"></span>
 												{{ isLoadingChangeRole ? 'Cargando...' : 'Actualizar'}}

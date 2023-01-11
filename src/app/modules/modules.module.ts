@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
 	NgbToastModule,
 	NgbProgressbarModule,
@@ -38,6 +38,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 		ModulesRoutingModule,
 		CommonModule,
 		SharedModule,
+		ReactiveFormsModule,
 		FormsModule,
 		NgbAlertModule,
 		NgbCarouselModule,

@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-
+import {
+	UntypedFormBuilder,
+	UntypedFormGroup,
+	Validators,
+} from "@angular/forms";
 import { RoleService } from "src/app/core/services/app/role.service";
 import { UserService } from "src/app/core/services/user/user.service";
 import { OptionListService } from "src/app/core/services/utils/option-list.service";
@@ -22,9 +25,11 @@ export class UsersComponent implements OnInit {
 	};
 
 	isNewUser: boolean = false;
+	isEditUser: boolean = false;
 	isShowInformation: boolean = false;
-	isLoadingUser: boolean = false;
 
+	isLoadingNewUser: boolean = false;
+	isLoadingUser: boolean = false;
 	isLoadingChangePassword: boolean = false;
 	isLoadingRemoveRole: boolean = false;
 	isLoadingChangeRole: boolean = false;
@@ -47,10 +52,8 @@ export class UsersComponent implements OnInit {
 		name: "",
 		nickname: "",
 		password: "",
-		playerIdPush: ""
-	}
-
-	newUserForm!: UntypedFormGroup;
+		playerIdPush: "",
+	};
 
 	currentUser: User | any = {
 		id: "",
@@ -80,6 +83,8 @@ export class UsersComponent implements OnInit {
 		nickname: "",
 	};
 
+	newUserForm!: UntypedFormGroup;
+
 	constructor(
 		private formBuilder: UntypedFormBuilder,
 		private _userServices: UserService,
@@ -88,19 +93,76 @@ export class UsersComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.newUserForm = this.formBuilder.group({
-			
-		});
-
 		this.loadData();
+		this.newUserForm = this.formBuilder.group({
+			address: [
+				"",
+				[
+					Validators.required,
+					Validators.maxLength(100),
+					Validators.pattern("^[wds#-]*$"),
+				],
+			],
+			documentNumber: [
+				"",
+				[
+					Validators.required,
+					Validators.maxLength(20),
+					Validators.pattern("^[a-zA-Z0-9-]*$"),
+				],
+			],
+			email: ["", [Validators.required, Validators.email]],
+			lastname: [
+				"",
+				[
+					Validators.required,
+					Validators.maxLength(50),
+					Validators.pattern("^[a-zA-Z ]*$"),
+				],
+			],
+			mobile: [
+				"",
+				[
+					Validators.required,
+					Validators.maxLength(10),
+					Validators.pattern("^[d]*$"),
+				],
+			],
+			name: [
+				"",
+				[
+					Validators.required,
+					Validators.maxLength(30),
+					Validators.pattern("^[a-zA-Z ]*$"),
+				],
+			],
+			nickname: [
+				"",
+				[
+					Validators.required,
+					Validators.maxLength(20),
+					Validators.minLength(8),
+					Validators.pattern("^[wd]*$"),
+				],
+			],
+			password: [
+				"",
+				[
+					Validators.required,
+					Validators.maxLength(20),
+					Validators.minLength(8),
+					Validators.pattern("^[a-z.*-_]*$"),
+				],
+			],
+		});
 	}
 
-	loadData(): void {
+	loadData(direction?: string): void {
 		this.isLoadingUser = true;
 
 		this._userServices.getList().then(({ data }) => {
 			this.listUsers = data;
-			if (this.listUsers.length > 0) {
+			if (this.listUsers.length > 0 && !direction) {
 				this.getUser(this.listUsers[0]);
 			}
 
@@ -128,6 +190,7 @@ export class UsersComponent implements OnInit {
 
 	async getUser({ id, ...user }: User): Promise<void> {
 		this.isNewUser = false;
+		this.isEditUser = false;
 
 		this._userServices.getById(id).then(({ isError, data }) => {
 			if (isError) {
@@ -141,18 +204,132 @@ export class UsersComponent implements OnInit {
 		});
 	}
 
+	fnShowEditUser(): void {
+		const { name, lastname, nickname } = this.currentUser;
+		const { documentNumber, mobile, address, email } = this.currentOUser;
+		this.f["name"].setValue(name);
+		this.f["lastname"].setValue(lastname);
+		this.f["documentNumber"].setValue(documentNumber);
+		this.f["mobile"].setValue(mobile);
+		this.f["address"].setValue(address);
+		this.f["email"].setValue(email);
+		this.f["email"].disable();
+		this.f["nickname"].setValue(nickname);
+		this.f["nickname"].disable();
+
+		this.isShowInformation = false;
+		this.isNewUser = false;
+		this.isEditUser = true;
+	}
+
 	fnShowNewUser(): void {
+		this.newUserForm.reset();
+		this.newUserForm.enable();
 		this.isShowInformation = false;
 		this.isNewUser = true;
+		this.isEditUser = false;
 	}
 
 	fnCloseNewUser(): void {
 		this.isShowInformation = true;
 		this.isNewUser = false;
+		this.isEditUser = false;
+		this.newUserForm.reset();
 	}
 
 	fnNewUser(): void {
-		console.log(this.newUser);
+		this.isLoadingNewUser = true;
+		this.newUserForm.disable();
+
+		console.log(this.newUserForm)
+
+		if (!this.newUserForm.valid) {
+			this.fnShowAlert(
+				{ type: "error", message: "Verifique los datos ingresados" },
+				() => {
+					this.isLoadingNewUser = false;
+				}
+			);
+			return;
+		}
+
+		if (this.isEditUser) {
+			this.updateUser();
+			return;
+		}
+
+		this.createUser();
+		return;
+	}
+
+	createUser(): void {
+		this._userServices
+			.create({
+				...this.newUserForm.value,
+				documentTypeId: "",
+				playerIdPush: "",
+			})
+			.then(({ isError, message, data }) => {
+				if (isError) {
+					this.fnShowAlert(
+						{
+							type: "error",
+							message:
+								message ?? "Verifique los datos ingresados",
+						},
+						() => {
+							this.isLoadingNewUser = false;
+							return;
+						}
+					);
+				}
+				this.fnShowAlert(
+					{
+						type: "success",
+						message: message ?? "Datos ingresados correctamente",
+					},
+					() => {
+						this.isLoadingNewUser = false;
+						this.newUserForm.enable();
+						this.loadData("home");
+					}
+				);
+			});
+	}
+
+	updateUser(): void {
+		this._userServices
+			.update(this.currentUser.id, this.newUserForm.value)
+			.then(({ isError, message, data }) => {
+				if (isError) {
+					this.fnShowAlert(
+						{
+							type: "error",
+							message:
+								message ?? "Verifique los datos ingresados",
+						},
+						() => {
+							this.isLoadingNewUser = false;
+							return;
+						}
+					);
+				}
+				this.fnShowAlert(
+					{
+						type: "success",
+						message: message || "Datos actualizados correctamente",
+					},
+					() => {
+						this.isLoadingNewUser = false;
+						this.newUserForm.enable();
+						this.loadData("home");
+					}
+				);
+			});
+	}
+
+	get f() {
+		return this.newUserForm.controls;
 	}
 
 	fnChangeRol(role: Rol): void {
@@ -238,10 +415,9 @@ export class UsersComponent implements OnInit {
 			active: true,
 		};
 
+		callback();
 		setTimeout(() => {
 			this.alert.active = false;
-
-			callback();
 		}, 2500);
 	}
 }
