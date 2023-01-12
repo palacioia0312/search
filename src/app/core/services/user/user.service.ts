@@ -60,7 +60,7 @@ export class UserService {
 		return await this._api.put("user/" + userId + "/update", content);
 	}
 
-	async changePassowrd(content: {
+	async changePassword(content: {
 		oldPassword: string;
 		password: string;
 	}): Promise<any> {

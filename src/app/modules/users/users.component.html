@@ -185,7 +185,7 @@
 						<div class="row mb-3">
 							<div class="col-6">
 								<div class="input-group">
-									<input type="number" class="form-control" placeholder="Teléfono" maxlength="10"
+									<input type="text" class="form-control" placeholder="Teléfono" maxlength="10"
 										formControlName="mobile">
 								</div>
 								<ng-container *ngIf="isLoadingNewUser">
@@ -434,7 +434,8 @@
 							<ng-template ngbNavContent>
 								<div class="row content-current-rol">
 									<div class="col-auto pt-2">
-										<h4 class="mb-3">Rol actual: <b>{{ currentUser.roleName }}</b></h4>
+										<h4 class="mb-3" *ngIf="currentUser.rolData.length === 1">Rol actual: <b>{{ currentUser.roleName }}</b></h4>
+										<h4 class="mb-3" *ngIf="currentUser.rolData.length > 1">Roles actuales: <b *ngFor="let item of currentUser.rolData">{{item.name}}, </b></h4>
 									</div>
 									<div class="col">
 										<button class="btn btn-danger" [disabled]="isLoadingRemoveRole"

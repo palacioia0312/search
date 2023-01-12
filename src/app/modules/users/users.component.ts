@@ -201,7 +201,15 @@ export class UsersComponent implements OnInit {
 				this.currentUser = { id, ...user };
 				this.isShowInformation = true;
 			}
+			this._rolServices.getUserList(this.currentUser.id).then(({ isError, data }) => {
+				if (isError) {
+					return;
+				}
+	
+				this.currentUser.rolData = data;
+			});
 		});
+
 	}
 
 	fnShowEditUser(): void {
@@ -243,15 +251,15 @@ export class UsersComponent implements OnInit {
 
 		console.log(this.newUserForm)
 
-		if (!this.newUserForm.valid) {
-			this.fnShowAlert(
-				{ type: "error", message: "Verifique los datos ingresados" },
-				() => {
-					this.isLoadingNewUser = false;
-				}
-			);
-			return;
-		}
+		// if (!this.newUserForm.valid) {
+		// 	this.fnShowAlert(
+		// 		{ type: "error", message: "Verifique los datos ingresados" },
+		// 		() => {
+		// 			this.isLoadingNewUser = false;
+		// 		}
+		// 	);
+		// 	return;
+		// }
 
 		if (this.isEditUser) {
 			this.updateUser();
@@ -347,7 +355,7 @@ export class UsersComponent implements OnInit {
 	fnChangePassword(): void {
 		this.isLoadingChangePassword = true;
 		this._userServices
-			.changePassowrd(this.changePassword)
+			.changeUserPassword(this.currentUser.id, this.changePassword.password)
 			.then(({ isError, data, message }) => {
 				if (isError) {
 					this.fnShowAlert({ type: "error", message }, () => {});
@@ -356,10 +364,12 @@ export class UsersComponent implements OnInit {
 
 				this.fnShowAlert(
 					{
-						type: " success",
-						message: message ?? "Cambio realizado correctamente",
+						type: "success",
+						message: message || "Cambio realizado correctamente",
 					},
-					() => {}
+					() => {
+						this.changePassword = { oldPassword: "", password: "" };
+					}
 				);
 				this.isLoadingChangePassword = false;
 			});
@@ -376,7 +386,7 @@ export class UsersComponent implements OnInit {
 
 				this.fnShowAlert(
 					{
-						type: " success",
+						type: "success",
 						message: message ?? "Cambio realizado correctamente",
 					},
 					() => {}
