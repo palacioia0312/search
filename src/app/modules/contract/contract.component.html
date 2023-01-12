@@ -1,1 +1,369 @@
-<p>contract works!</p>
+<div class="row" *ngIf="listUsers.length === 0">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				No hay datos
+			</div>
+			<div class="card-body">
+				<span>No hay datos</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" *ngIf="listUsers.length > 0">
+	<div class="col-12">
+		<div class="alert" [ngClass]="{'alert-danger': alert.type == 'error', 'alert-success': alert.type == 'success'}"
+			role="alert" *ngIf="alert.active">
+			<strong>{{ alert.message }}</strong>
+		</div>
+	</div>
+	<div class="col-md-12 col-lg-6">
+		<div class="card">
+			<div class="card-header">
+				Lista de Usuarios
+			</div>
+			<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-6">
+							<div>
+								<!-- <label for="basiInput" class="form-label">Buscar</label> -->
+								<input type="text" class="form-control" placeholder="Buscar..." max="100">
+							</div>
+						</div>
+						<div class="col-6 d-flex justify-content-between">
+							<div>
+								<select class="form-select mb-3">
+									<option selected disabled>Ordenar</option>
+									<option value="ASC">Ascendente</option>
+									<option value="DES">Descendente</option>
+								</select>
+							</div>
+							<div>
+								<button class="btn btn-success" (click)="fnShowNewUser()">Nuevo</button>
+							</div>
+						</div>
+					</div>
+					<div class="mx-n3">
+						<div class="row d-flex justify-content-center" *ngIf="isLoadingUser">
+							<div class="spinner-border" role="status">
+								<span class="sr-only">Loading...</span>
+							</div>
+						</div>
+						<ngx-simplebar style="max-height: 450px;" class="px-3" *ngIf="!isLoadingUser">
+							<div class="content-users">
+								<ng-container *ngFor="let user of listUsers">
+									<div class="content-user" (click)="getUser(user)"
+										[ngClass]="{'active': currentUser.id === user.id}">
+										<div class="content">
+											<div class="content-img">
+												<img src="https://themesbrand.com/velzon/html/default/assets/images/users/avatar-1.jpg"
+													alt="">
+											</div>
+											<div class="content-info w-75">
+												<div class="content-info-basics">
+													<div class="content-info-name">
+														<span>{{user.name}} {{user.lastname}}</span>
+													</div>
+													<div class="content-info-email">
+														<span>{{user.email}}</span>
+													</div>
+													<div class="content-info-number">
+														<span>{{user.telephone}}</span>
+													</div>
+												</div>
+												<div class="content-date-info">
+													<div class="content-date-info-top">
+														<span class="title">
+															Creación:
+														</span>
+														<span class="value">
+															{{user.createdOn}}
+														</span>
+													</div>
+													<div class="content-date-info-botton">
+														<span class="title">
+															Modificación:
+														</span>
+														<span class="value">
+															{{user.modifieddOn || 'No ha sido modificado'}}
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</ng-container>
+							</div>
+						</ngx-simplebar>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="card-body">Footer</div> -->
+		</div>
+	</div>
+	<div class="col-md-12 col-lg-6" *ngIf="isNewUser">
+		<div class="card">
+			<div class="card-header">Crear Usuarios</div>
+			<div class="card-body">
+				<div class="content-new-user">
+					<div class="row mb-3">
+						<div class="col-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Nombre">
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Apellido">
+							</div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-6">
+							<div class="input-group">
+								<select class="form-select">
+									<option selected disabled>Tipo documento</option>
+									<option value="TI">TI</option>
+									<option value="CC">CC</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Número de documento">
+							</div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Teléfono">
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Dirección">
+							</div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-12">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Email">
+							</div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Nombre de usuario">
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Contraseña">
+							</div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-6">
+							<div class="input-group">
+								<select class="form-select">
+									<option selected disabled>Seleccionar rol</option>
+									<option value="TI">TI</option>
+									<option value="CC">CC</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12 d-flex justify-content-end">
+							<div class="content-actions">
+								<button type="button" class="btn btn-soft-primary waves-effect waves-light"
+									(click)="fnCloseNewUser()">Cancelar</button>
+								<button type="button"
+									class="btn btn-soft-success waves-effect waves-light btn-save">Guardar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 col-lg-6" *ngIf="!isNewUser">
+		<div class="card">
+			<div class="card-header align-items-center d-flex">
+				<div class="flex-shrink-0 ms-2">
+					<ul ngbNav #HeaderTabs="ngbNav" [activeId]="1"
+						class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0">
+						<li [ngbNavItem]="1">
+							<a ngbNavLink>
+								Información
+							</a>
+							<ng-template ngbNavContent>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Nombre</label>
+										<input type="text" class="form-control" [value]="currentUser.name" disabled>
+									</div>
+									<div class="col">
+										<label for="basiInput" class="form-label">Apellido</label>
+										<input type="text" class="form-control" [value]="currentUser.lastname" disabled>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Tipo de documento</label>
+										<input type="text" class="form-control" [value]="" disabled>
+									</div>
+									<div class="col">
+										<label for="basiInput" class="form-label">Número de documento</label>
+										<input type="text" class="form-control" [value]="currentOUser.documentNumber"
+											disabled>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Telefono</label>
+										<input type="text" class="form-control"
+											[value]="currentUser.telephone || currentUser.mobile || currentOUser.mobile"
+											mask="(000)000-0000" disabled>
+
+									</div>
+									<div class="col">
+										<label for="basiInput" class="form-label">Dirección</label>
+										<input type="text" class="form-control" [value]="currentOUser.address" disabled>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Email</label>
+										<input type="text" class="form-control" [value]="currentUser.email" disabled>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Nickname</label>
+										<input type="text" class="form-control" [value]="currentUser.nickname" disabled>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col">
+										<label for="basiInput" class="form-label">Rol</label>
+										<input type="text" class="form-control" [value]="currentUser.roleName" disabled>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col text-end">
+										<button class="btn btn-success">Editar</button>
+									</div>
+								</div>
+							</ng-template>
+						</li>
+						<li [ngbNavItem]="2">
+							<a ngbNavLink>
+								Cambiar contraseña
+							</a>
+							<ng-template ngbNavContent>
+								<div class="row mb-3">
+									<div class="col-6">
+										<div class="input-group">
+											<input type="password" class="form-control" placeholder="Contraseña"
+												[(ngModel)]="changePassword.oldPassword">
+										</div>
+										<span>Debe tener al menos 8 caracteres</span>
+									</div>
+									<div class="col-6">
+										<div class="input-group">
+											<input type="password" class="form-control"
+												placeholder="Confirmar contraseña"
+												[(ngModel)]="changePassword.password">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col text-end">
+										<button type="button"
+											class="btn btn-soft-primary waves-effect waves-light">Cancelar</button>
+										<button class="btn btn-success btn-save"
+											[disabled]="fnDisabledBtnChangePassword()" (click)="fnChangePassword()">
+											<span class="spinner-border spinner-border-sm" role="status"
+												aria-hidden="true" *ngIf="isLoadingChangePassword"></span>
+											{{ isLoadingChangePassword ? 'Cargando...' : 'Actualizar'}}
+										</button>
+									</div>
+								</div>
+							</ng-template>
+						</li>
+						<li [ngbNavItem]="3" *ngIf="currentUser.roleName">
+							<a ngbNavLink>
+								Rol
+							</a>
+							<ng-template ngbNavContent>
+								<div class="row content-current-rol">
+									<div class="col-auto pt-2">
+										<h4 class="mb-3">Rol actual: <b>{{ currentUser.roleName }}</b></h4>
+									</div>
+									<div class="col">
+										<button class="btn btn-danger" [disabled]="isLoadingRemoveRole" (click)="fnRemoveRole()">
+											<span class="spinner-border spinner-border-sm" role="status"
+												aria-hidden="true" *ngIf="isLoadingRemoveRole"></span>
+											{{ isLoadingRemoveRole ? 'Cargando...' : 'Remover rol al usuario'}}
+										</button>
+									</div>
+								</div>
+
+								<div class="content-all-rol mt-3">
+									<div class="row">
+										<div class="col">
+											<span>Seleccion el rol que desea asignar al usuario</span>
+										</div>
+									</div>
+									<fieldset id="fieldsetId">
+										<ng-container *ngFor="let rol of listRols">
+											<div class="row">
+												<div class="col">
+													<div class="form-check mb-2">
+														<input class="form-check-input" type="radio" 
+															[name]="'radioRole-' + rol.id" (click)="fnChangeRol(rol)"
+															[id]="rol.id">
+														<label class="form-check-label" [for]="rol.id">
+															{{ rol.name }}
+														</label>
+													</div>
+												</div>
+											</div>
+										</ng-container>
+									</fieldset>
+									<div class="row">
+										<div class="col text-end">
+											<button class="btn btn-success" [disabled]="isLoadingChangeRole" (click)="fnChangeRole()">
+												<span class="spinner-border spinner-border-sm" role="status"
+													aria-hidden="true" *ngIf="isLoadingChangeRole"></span>
+												{{ isLoadingChangeRole ? 'Cargando...' : 'Actualizar'}}
+											</button>
+										</div>
+									</div>
+								</div>
+							</ng-template>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="card-body">
+				<!-- Tab panes -->
+				<div class="tab-content text-muted">
+					<div [ngbNavOutlet]="HeaderTabs"></div>
+				</div>
+			</div><!-- end card-body -->
+		</div><!-- end card -->
+	</div>
+</div>

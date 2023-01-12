@@ -26,6 +26,12 @@ export const MENU: MenuItem[] = [
 		link: "/users",
 	},
 	{
+		id: 4,
+		label: "MENUITEMS.CONTRACT.TEXT",
+		icon: "ri-user-line",
+		link: "/contract",
+	},
+	{
 		id: 179,
 		label: "MENUITEMS.MULTILEVEL.TEXT",
 		icon: "ri-share-line",

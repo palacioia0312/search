@@ -40,7 +40,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgbToastModule,
     FeatherModule.pick(allIcons),
     CountToModule,
-    LeafletModule,
     NgbDropdownModule,
     NgbNavModule,
     SimplebarAngularModule,
