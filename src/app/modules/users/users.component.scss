@@ -39,6 +39,10 @@
 	padding: 8px;
 }
 
+.content .content-info-basics .content-info-name span {
+	font-size: 18px;
+}
+
 .content .content-date-info {
 	border-left: 1px solid #405189;
 	padding-left: 25px;
@@ -59,4 +63,17 @@
 
 .content-user:hover {
 	cursor: pointer;
+}
+
+
+.input-search:invalid {
+	background-color: #ec443f;
+}
+
+.input-search:invalid+.span-alert {
+	display: block;
+}
+
+.input-search:valid+.span-alert {
+	display: none;
 }

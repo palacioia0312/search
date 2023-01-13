@@ -29,7 +29,10 @@
 						<div class="col-6">
 							<div>
 								<!-- <label for="basiInput" class="form-label">Buscar</label> -->
-								<input type="text" class="form-control" placeholder="Buscar..." max="100">
+								<input type="text" class="form-control input-search" placeholder="Buscar..." max="100"
+									pattern="^[a-zA-Z0-9À-ÿ\u00f1\u00d1]*$">
+								<span class="text-danger span-alert">Solamente se deben de ingresar caracteres
+									alfanuméricos y tildes</span>
 							</div>
 						</div>
 						<div class="col-6 d-flex justify-content-between">
@@ -41,7 +44,8 @@
 								</select>
 							</div>
 							<div>
-								<button class="btn btn-success" (click)="fnShowNewUser()">Nuevo</button>
+								<button class="btn btn-success" [disabled]="isNewUser"
+									(click)="fnShowNewUser()">Nuevo</button>
 							</div>
 						</div>
 					</div>
@@ -70,7 +74,7 @@
 														<span>{{user.email}}</span>
 													</div>
 													<div class="content-info-number">
-														<span>{{user.telephone}}</span>
+														<span>{{user.mobile}}</span>
 													</div>
 												</div>
 												<div class="content-date-info">
@@ -434,8 +438,10 @@
 							<ng-template ngbNavContent>
 								<div class="row content-current-rol">
 									<div class="col-auto pt-2">
-										<h4 class="mb-3" *ngIf="currentUser.rolData.length === 1">Rol actual: <b>{{ currentUser.roleName }}</b></h4>
-										<h4 class="mb-3" *ngIf="currentUser.rolData.length > 1">Roles actuales: <b *ngFor="let item of currentUser.rolData">{{item.name}}, </b></h4>
+										<h4 class="mb-3" *ngIf="currentUser.rolData.length === 1">Rol actual: <b>{{
+												currentUser.roleName }}</b></h4>
+										<h4 class="mb-3" *ngIf="currentUser.rolData.length > 1">Roles actuales: <b
+												*ngFor="let item of currentUser.rolData">{{item.name}}, </b></h4>
 									</div>
 									<div class="col">
 										<button class="btn btn-danger" [disabled]="isLoadingRemoveRole"
